@@ -7,7 +7,7 @@ import io.restassured.http.Method;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
-public class sample {
+public class user {
 @Test
 public void sample() {
 	RestAssured.baseURI="https://sevaapi22.ksp-recruitment.in";

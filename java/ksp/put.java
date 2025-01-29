@@ -7,13 +7,13 @@ import io.restassured.http.Method;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
-public class sample {
+public class put {
 @Test
-public void sample() {
-	RestAssured.baseURI="https://sevaapi22.ksp-recruitment.in";
+public void sample()
+{
+	RestAssured.baseURI="http://172.10.1.159:9022/swagger/index.html";
 	RequestSpecification req = RestAssured.given();
-	Response res = req.request(Method.GET,"/api/v1/Applicant/ksp/07/2729373");
-	System.out.println(res.getStatusCode());
+	Response res = req.request(Method.GET);
 	System.out.println(res.asPrettyString());
 }
 }

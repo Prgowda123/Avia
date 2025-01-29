@@ -1,4 +1,4 @@
-package ksp;
+package apc_kk;
 
 import org.testng.annotations.Test;
 
@@ -7,13 +7,15 @@ import io.restassured.http.Method;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
-public class sample {
+public class post {
 @Test
-public void sample() {
-	RestAssured.baseURI="https://sevaapi22.ksp-recruitment.in";
+public void sample()
+{
+	RestAssured.baseURI="http://172.10.1.159:9025";
 	RequestSpecification req = RestAssured.given();
-	Response res = req.request(Method.GET,"/api/v1/Applicant/ksp/07/2729373");
+	Response res = req.request(Method.GET,"/api/v1/Applicant/543453567866/09-12-2003");
 	System.out.println(res.getStatusCode());
 	System.out.println(res.asPrettyString());
+	
 }
 }
