@@ -6,8 +6,10 @@ import java.awt.event.KeyEvent;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.util.Date;
 import java.util.Set;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -33,7 +35,7 @@ public class Apc_valid {
 
 
 @Test
-public void sample1() throws InterruptedException, AWTException
+public void sample1() throws InterruptedException, AWTException, ParseException
 {
 	ChromeDriver driver = new ChromeDriver();
 	driver.manage().window().maximize();
@@ -77,7 +79,7 @@ public void sample1() throws InterruptedException, AWTException
 		
 		
 		
-		for (int i =91; i <= 100; i++) { // Start from row 1 to skip header
+		for (int i =89; i <= 100; i++) { // Start from row 1 to skip header
 			Row row = sheet.getRow(i);
 			
 			if (row == null) {
@@ -162,6 +164,20 @@ public void sample1() throws InterruptedException, AWTException
 				String Applicant_Thumb = getCellValue(row.getCell(100));
 				String  Applicant_IdentityCard = getCellValue(row.getCell(101));
 				
+				 String inputDate = Applicant_DateOfBirth; // Original format (dd-MMM-yyyy)
+
+			        // Define input and output formats
+			        SimpleDateFormat inputFormat = new SimpleDateFormat("dd-MMM-yyyy");
+			        SimpleDateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy");
+
+			        // Parse the input date string into a Date object
+			        Date date = inputFormat.parse(inputDate);
+
+			        // Format the Date object into the desired format
+			        String formattedDate = outputFormat.format(date);
+
+			        // Print the result
+			        System.out.println("Converted Date: " + formattedDate); // Output: 21-03-2021
 				
 	WebElement ApplyingType = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("Applicant_ApplyingTypeCode")));
 	Select s=new Select(ApplyingType);
@@ -192,14 +208,16 @@ public void sample1() throws InterruptedException, AWTException
 	WebElement adhar = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("Applicant_AadharNo")));
 	adhar.sendKeys(Applicant_AadharNo);
 	
-	WebElement Dob = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("Applicant_DateOfBirth")));
+	WebElement Dob = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@id='Applicant_DateOfBirth']/following-sibling::input[1]")));
 	Dob.sendKeys(Applicant_DateOfBirth);
+ 
 	
 	WebElement Gender = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("Applicant_Reservation_GenderCode")));
 	Select s2=new Select(Gender);
 	s2.selectByIndex(GenderCode);
 	
 	WebElement Height = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("Applicant_PhysicalDetail_Height")));
+
 	Height.sendKeys(PhysicalDetail_Height);
 	
 	
@@ -284,8 +302,8 @@ public void sample1() throws InterruptedException, AWTException
 	
 	WebElement SubCaste = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("Applicant_Reservation_SubCaste")));
 	SubCaste.sendKeys(Reservation_SubCaste);
-	
-	WebElement DateofSubCaste = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("Applicant_Reservation_CategoryCertificateIssuedDate")));
+	Thread.sleep(1000);
+	WebElement DateofSubCaste = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@id='Applicant_Reservation_CategoryCertificateIssuedDate']/following-sibling::input[1]")));
 	DateofSubCaste.sendKeys(CategoryCertificateIssuedDate);
 	
 	WebElement Kannada = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@id='Applicant_Reservation_IsClamingKannadaMediumReservation' and @ value='True']")));
@@ -303,7 +321,7 @@ public void sample1() throws InterruptedException, AWTException
 		act.moveToElement(Benifit).click().perform();
 		jss.executeScript("window.scrollBy(0,300)", "");
 		
-		WebElement Dateofdischarge = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("Applicant_applicantExService_DischargeDate")));
+		WebElement Dateofdischarge = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@id='Applicant_applicantExService_DischargeDate']/following-sibling::input[1]")));
 		Dateofdischarge.sendKeys(ExService_DischargeDate);
 	
 		WebElement Exservicecatagory = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("Applicant_applicantExService_ExServiceEducationalQualificationCode")));
@@ -370,7 +388,7 @@ public void sample1() throws InterruptedException, AWTException
 	WebElement GovtEmp = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@id='Applicant_Reservation_AreYouAGovermentEmployee' and @ value='True']")));
 	act.moveToElement(GovtEmp).click().perform();
 	
-	WebElement Dateofjoining = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("Applicant_Reservation_GovermentServiceDetail_JoiningDate")));
+	WebElement Dateofjoining = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@id='Applicant_Reservation_GovermentServiceDetail_JoiningDate']/following-sibling::input[1]")));
 	Dateofjoining.sendKeys(Detail_JoiningDate);
 	
 	WebElement ser_year  = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("Applicant_Reservation_GovermentServiceDetail_YearsInService")));
@@ -1120,10 +1138,10 @@ public void sample1() throws InterruptedException, AWTException
 
         // Enter Date of Birth
         WebElement dateofbirth1 = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@class='form-control dob flatpickr-input']")));
-        dateofbirth1.sendKeys(Applicant_DateOfBirth);
+        dateofbirth1.sendKeys(formattedDate	);
 
         // Click 'Submit'
-        WebElement login = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[text()='Submit ']")));
+        WebElement login = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@id='submitBtn']")));
         act.moveToElement(login).click().perform();
         Thread.sleep(2000);	
         jss.executeScript("window.scrollBy(0,1000)");
@@ -1139,17 +1157,17 @@ public void sample1() throws InterruptedException, AWTException
         Thread.sleep(2000);
         
         switchToNewWindow(driver);
-        Thread.sleep(2000);
+        Thread.sleep(1000);
         WebElement myaap1 = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("(//a[contains(text(),'My Application')])[2]")));
         act.moveToElement(myaap1).click().perform();
-        Thread.sleep(2000);
+        Thread.sleep(1000);
         switchToNewWindow(driver);
         
         WebElement apno = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ApplicantModel_ApplicationNo")));
         apno.sendKeys(appliationno);
-        Thread.sleep(2000);
+        Thread.sleep(1000);
         WebElement dbo = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ApplicantModel_DateOfBirth")));
-        dbo.sendKeys(Applicant_DateOfBirth);
+        dbo.sendKeys(formattedDate);
 
         // Click 'Login'
         WebElement log = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[contains(text(),'Login')]")));
@@ -1162,7 +1180,7 @@ public void sample1() throws InterruptedException, AWTException
         WebElement download = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[text()='DOWNLOAD APPLICATION']")));
         Thread.sleep(1000);
         act.moveToElement(download).click().perform();
-        Thread.sleep(1500);
+        Thread.sleep(2000);
         driver.findElement(By.linkText("Logout")).click();	
         switchToNewWindow(driver);
     	wait.until(ExpectedConditions.presenceOfElementLocated(By.linkText("New Application"))).click();
@@ -1257,7 +1275,7 @@ private String getCellValue(Cell cell) {
             if (DateUtil.isCellDateFormatted(cell)) {
                 // If the cell contains a date, convert it to a string in the desired format
                 java.util.Date date = cell.getDateCellValue();
-                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy"); // Customize format
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy"); // Customize format
                 return sdf.format(date);
             } else {
                 // Handle numeric values as needed
