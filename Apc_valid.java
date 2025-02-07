@@ -79,7 +79,7 @@ public void sample1() throws InterruptedException, AWTException, ParseException
 		
 		
 		
-		for (int i =89; i <= 100; i++) { // Start from row 1 to skip header
+		for (int i =89	; i <= 100; i++) { // Start from row 1 to skip header
 			Row row = sheet.getRow(i);
 			
 			if (row == null) {
@@ -321,7 +321,7 @@ public void sample1() throws InterruptedException, AWTException, ParseException
 		act.moveToElement(Benifit).click().perform();
 		jss.executeScript("window.scrollBy(0,300)", "");
 		
-		WebElement Dateofdischarge = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@id='Applicant_applicantExService_DischargeDate']/following-sibling::input[1]")));
+		WebElement Dateofdischarge = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@id='ApplicantExDischarge']/preceding-sibling::input[1]")));
 		Dateofdischarge.sendKeys(ExService_DischargeDate);
 	
 		WebElement Exservicecatagory = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("Applicant_applicantExService_ExServiceEducationalQualificationCode")));
@@ -401,7 +401,7 @@ public void sample1() throws InterruptedException, AWTException, ParseException
 	
 	WebElement ser_day  = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("Applicant_Reservation_GovermentServiceDetail_DaysInService")));
 	Select s16=new Select(ser_day );
-	s16.selectByIndex(DaysInService_govt);
+	s16.selectByIndex(DaysInService_govt);	
 
 	WebElement GovtDept = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("Applicant_Reservation_GovermentServiceDetail_Department")));
 	GovtDept.sendKeys(GovermentServiceDetail_Department);
